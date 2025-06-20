@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS Animations & localStorage Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background-color: #f0f0f0;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
+      margin: 20px auto;
+      display: block;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+
+    
+    .animate-bounce {
+      animation: bounce 0.6s ease;
+    }
+
+    
+    #prefDisplay {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>CSS Animations & localStorage Example</h1>
+
+  <button id="animateBtn">Click Me to Bounce!</button>
+
+  <label for="colorPicker">Pick a background color:</label>
+  <input type="color" id="colorPicker" />
+
+  <div id="prefDisplay">Your chosen background color will be saved.</div>
+
+  <script>
+    const animateBtn = document.getElementById('animateBtn');
+    const colorPicker = document.getElementById('colorPicker');
+    const prefDisplay = document.getElementById('prefDisplay');
+
+    
+    function loadPreferences() {
+      const savedColor = localStorage.getItem('bgColor');
+      if (savedColor) {
+        document.body.style.backgroundColor = savedColor;
+        colorPicker.value = savedColor;
+        prefDisplay.textContent = `Your saved background color is ${savedColor}`;
+      }
+    }
+
+    
+    colorPicker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      document.body.style.backgroundColor = color;
+      localStorage.setItem('bgColor', color);
+      prefDisplay.textContent = `Your chosen background color is ${color}`;
+    });
+
+    
+    animateBtn.addEventListener('click', () => {
+      animateBtn.classList.add('animate-bounce');
+      
+      animateBtn.addEventListener('animationend', () => {
+        animateBtn.classList.remove('animate-bounce');
+      }, { once: true });
+    });
+
+    
+    window.onload = loadPreferences;
+  </script>
+
+</body>
+</html>
